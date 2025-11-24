@@ -5,6 +5,7 @@ Trabalho para a matéria de AED2
 Participantes:
 
 - Alex Benjamim de Oliveira Martins 202301419
+- Luis Renato Pinto Cordeiro 202301466
 
 Como executar:
 
