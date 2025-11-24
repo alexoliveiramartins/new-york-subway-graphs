@@ -1,0 +1,1 @@
+# Esse e o arquivo principal onde serao feitos: carregamento dos dados, construcao dos grafos e constrole de requisicoes

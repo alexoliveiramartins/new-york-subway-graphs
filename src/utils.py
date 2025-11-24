@@ -1,0 +1,1 @@
+# aqui serao colocados funcoes auxiliares

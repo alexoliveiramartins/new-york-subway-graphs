@@ -1,10 +1,12 @@
 # new-york-subway-graphs
+# Trabalho para a matéria de AED2.
 
-Trabalho para a matéria de AED2
+O trabalho consiste em desenvolver um programa que identifique as rotas mais curtas em uma rede de ônibus utilizando grafos.
 
 Participantes:
 
 - Alex Benjamim de Oliveira Martins 202301419
+- Felipe Sucupira de Oliveira 202301439
 
 Como executar:
 

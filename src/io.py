@@ -1,0 +1,1 @@
+# Nesse arquivo que terao as funcoes de  carregar o csv e de validacao basica
