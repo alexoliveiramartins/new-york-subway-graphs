@@ -1,14 +1,16 @@
 import pandas as pd
 import math
 import networkx as nx
+from collections import defaultdict
 
-def build_graph(df, distance_threshold_km):
+def build_graph_range(df, distance_threshold_km):
     G = nx.Graph()
     # adicionar nós
     for _, r in df.iterrows():
         sid = str(r["Station ID"])
         G.add_node(sid, name=r["Stop Name"], lat=float(r["GTFS Latitude"]), lon=float(r["GTFS Longitude"]),
                    complex_id=str(r["Complex ID"]), routes=str(r.get("Daytime Routes", "")))
+                   
     # arestas de transferência (mesmo Complex ID)
     groups = df.groupby("Complex ID")
     for cid, group in groups:
@@ -31,6 +33,27 @@ def build_graph(df, distance_threshold_km):
                 else:
                     G.add_edge(id_i, id_j, type="proximity", distance_km=round(dist,3))
     return G
+
+def build_graph_service(df):
+    G = nx.Graph()
+    # adicionar nós
+    for _, r in df.iterrows():
+        sid = str(r["Station ID"])
+        G.add_node(sid, name=r["Stop Name"], lat=float(r["GTFS Latitude"]), lon=float(r["GTFS Longitude"]),
+                   complex_id=str(r["Complex ID"]), routes=str(r.get("Daytime Routes", "")))
+    # arestas de serviço (mesmo Daytime Routes)
+    route_map = defaultdict(list)
+    for _, r in df.iterrows():
+        sid = str(r["Station ID"])
+        routes = str(r.get("Daytime Routes", ""))
+        for route in routes.split(","):
+            route_map[route.strip()].append(sid)
+    for route, stations in route_map.items():
+        for i in range(len(stations)):
+            for j in range(i+1, len(stations)):
+                G.add_edge(stations[i], stations[j], type="service", route=route)
+    return G
+
 
 def haversine(lat1, lon1, lat2, lon2):
     R = 6371.0
