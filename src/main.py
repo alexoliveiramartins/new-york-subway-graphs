@@ -1,24 +1,45 @@
+import networkx as nx
+import matplotlib.pyplot as plt
 import pandas as pd
-from graph import build_graph_range, build_graph_service
-from utils import plot_folium
-MAXRANGEKM = 1.2  # ligações de proximidade (ajuste se necessário)
+from utils import makeGraphLista
+
 CSV = "dados/MTA_Subway_Stations.csv"
 df = pd.read_csv(CSV)
-df = df.dropna(subset=["GTFS Latitude", "GTFS Longitude"])
 
-print("Selecione o método de construção do grafo:")
-method = input("1 - Proximidade (distância)\n2 - Serviço (linhas comuns)\nEscolha 1 ou 2: ")
-if method == "1":
-    G = build_graph_range(df, MAXRANGEKM)
-    plot_folium(G, "tests/subway_graph_range.html")
-    print("Número de estações (nós):", G.number_of_nodes())
-    print("Número de conexões (arestas):", G.number_of_edges())
-elif method == "2":
-    G = build_graph_service(df)
-    plot_folium(G, "tests/subway_graph_service.html")
-    print("Número de estações (nós):", G.number_of_nodes())
-    print("Número de conexões (arestas):", G.number_of_edges())
-else:
-    print("Método inválido. Escolha 1 ou 2.")
+lines = df['Line'].unique()
+ids1 = sorted(df[df["Line"] == 'West End']["Station ID"].tolist())
+graph1 = makeGraphLista(ids1)
 
-print("Execução concluída.")
+ids2 = sorted(df[df["Line"] == 'Staten Island']["Station ID"].tolist())
+graph2 = makeGraphLista(ids2)
+
+for line in lines:
+    ids = sorted(df[df["Line"] == line]["Station ID"].tolist())
+    graph = makeGraphLista(ids)
+    G = nx.Graph(graph)
+    pos = {
+        row["Station ID"]: (row["GTFS Longitude"], row["GTFS Latitude"])
+        for _, row in df.iterrows()
+    }
+    nx.draw(G, pos, with_labels=False, node_size=10)
+
+# lista com todos os Station ID's
+# list = [id for id in df["Station ID"]]
+# list.sort()
+
+# Montar o grafo (lista de adjacencia)
+
+# graph = makeGraphLista(list)
+# G = nx.Graph(graph)
+
+# pos = {
+#     row["Station ID"]: (row["GTFS Longitude"], row["GTFS Latitude"])
+#     for _, row in df.iterrows()
+# }
+
+# for position in range(1, len(pos)):
+#     print(pos[position])
+
+# nx.draw(G, pos, with_labels=False, node_size=10)
+plt.figure(figsize=(10, 8))
+plt.show()
