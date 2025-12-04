@@ -1,6 +1,6 @@
 import folium
 
-def plot_folium(G, out_html="tests/subway_graph.html"):
+def plot_folium(G, out_html="src/subway_graph.html"):
     # centro do mapa = média das coords
     lats = [d["lat"] for _, d in G.nodes(data=True)]
     lons = [d["lon"] for _, d in G.nodes(data=True)]
