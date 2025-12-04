@@ -34,7 +34,9 @@ Math: Cálculos de distância geodésica.
 - Marco Antônio Martins Fernandes 202301468
 
 # Como executar:
-
+```bash
+git clone https://github.com/alexoliveiramartins/new-york-subway-graphs.git
+```
 ```bash
 python3 -m venv .venv
 ```
